@@ -1,0 +1,583 @@
+/* Enhanced Theme Park App CSS */
+
+/* Import modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* CSS Custom Properties for better theme management */
+:root {
+  /* Color Palette */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-card: #1e293b;
+  --bg-input: #334155;
+  --bg-hover: #475569;
+  
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-accent: #60a5fa;
+  
+  /* Brand Colors */
+  --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --primary-hover: linear-gradient(135deg, #5a67d8 0%, #6a4291 100%);
+  --success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --success-hover: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --danger: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  
+  /* Status Colors */
+  --thrill-high: #ef4444;
+  --thrill-medium: #f59e0b;
+  --thrill-low: #10b981;
+  
+  /* Effects */
+  --border-radius: 0.75rem;
+  --border-radius-lg: 1rem;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Animation */
+  --transition-fast: 0.15s ease-out;
+  --transition: 0.3s ease-out;
+  --transition-slow: 0.5s ease-out;
+}
+
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, #0c1426 100%);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* Main app container with animated background */
+.App {
+  min-height: 100vh;
+  position: relative;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Center the main container content */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Enhanced card styling with glassmorphism effect */
+.custom-card {
+  background: rgba(30, 41, 59, 0.7) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(203, 213, 225, 0.1) !important;
+  border-radius: var(--border-radius-lg) !important;
+  box-shadow: var(--shadow-xl) !important;
+  transition: all var(--transition) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(203, 213, 225, 0.2), transparent);
+}
+
+.custom-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(203, 213, 225, 0.2) !important;
+}
+
+.custom-card .card-title {
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  position: relative;
+}
+
+.custom-card .card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* Enhanced input styling */
+.custom-input {
+  background: rgba(51, 65, 85, 0.6) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(203, 213, 225, 0.1) !important;
+  border-radius: var(--border-radius) !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.95rem !important;
+  transition: all var(--transition) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.custom-input::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.7 !important;
+}
+
+.custom-input:focus {
+  background: rgba(51, 65, 85, 0.8) !important;
+  color: var(--text-primary) !important;
+  border-color: rgba(102, 126, 234, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  outline: none !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Enhanced form labels */
+.form-label {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  margin-bottom: 0.5rem !important;
+  display: block !important;
+  letter-spacing: 0.025em !important;
+}
+
+/* Enhanced checkbox styling */
+.custom-checkbox {
+  margin: 0.5rem 0 !important;
+}
+
+.custom-checkbox .form-check-input {
+  background: rgba(51, 65, 85, 0.6) !important;
+  border: 2px solid rgba(203, 213, 225, 0.2) !important;
+  border-radius: 0.375rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  transition: all var(--transition) !important;
+  cursor: pointer !important;
+}
+
+.custom-checkbox .form-check-input:checked {
+  background: var(--primary) !important;
+  border-color: transparent !important;
+  transform: scale(1.05) !important;
+}
+
+.custom-checkbox .form-check-input:focus {
+  border-color: rgba(102, 126, 234, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  outline: none !important;
+}
+
+.custom-checkbox .form-check-label {
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  margin-left: 0.5rem !important;
+}
+
+/* Enhanced button styling */
+.custom-button, .custom-button-secondary {
+  border-radius: var(--border-radius) !important;
+  padding: 0.875rem 2rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.025em !important;
+  transition: all var(--transition) !important;
+  border: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  text-transform: uppercase !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.custom-button::before, .custom-button-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.custom-button:hover::before, .custom-button-secondary:hover::before {
+  left: 100%;
+}
+
+.custom-button:hover, .custom-button-secondary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.custom-button:active, .custom-button-secondary:active {
+  transform: translateY(0) !important;
+}
+
+.custom-button:disabled, .custom-button-secondary:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Primary button */
+.custom-button.btn-primary {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+.custom-button.btn-primary:hover {
+  background: var(--primary-hover) !important;
+}
+
+/* Success button */
+.custom-button.btn-success {
+  background: var(--success) !important;
+  color: white !important;
+}
+
+.custom-button.btn-success:hover {
+  background: var(--success-hover) !important;
+}
+
+/* Secondary button */
+.custom-button-secondary {
+  background: rgba(71, 85, 105, 0.8) !important;
+  color: var(--text-primary) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.custom-button-secondary:hover {
+  background: rgba(71, 85, 105, 1) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Enhanced table styling */
+.custom-table {
+  background: rgba(30, 41, 59, 0.6) !important;
+  color: var(--text-primary) !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: var(--border-radius) !important;
+  overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.custom-table thead {
+  background: rgba(51, 65, 85, 0.8) !important;
+  position: relative !important;
+}
+
+.custom-table thead::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(203, 213, 225, 0.2), transparent);
+}
+
+.custom-table th {
+  color: var(--text-secondary) !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 1rem 0.75rem !important;
+  border: none !important;
+  position: relative !important;
+}
+
+.custom-table td {
+  padding: 0.875rem 0.75rem !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3) !important;
+  transition: all var(--transition-fast) !important;
+  font-weight: 500 !important;
+}
+
+.custom-table tbody tr {
+  transition: all var(--transition-fast) !important;
+}
+
+.custom-table tbody tr:hover {
+  background: rgba(51, 65, 85, 0.4) !important;
+  transform: scale(1.01) !important;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Thrill level indicators with enhanced styling */
+.text-danger { 
+  color: var(--thrill-high) !important; 
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
+}
+
+.text-warning { 
+  color: var(--thrill-medium) !important; 
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.3) !important;
+}
+
+.text-success { 
+  color: var(--thrill-low) !important; 
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Enhanced alert styling */
+.alert {
+  border-radius: var(--border-radius) !important;
+  border: none !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: var(--shadow) !important;
+  font-weight: 500 !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #fecaca !important;
+  border-left: 4px solid var(--thrill-high) !important;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #a7f3d0 !important;
+  border-left: 4px solid var(--thrill-low) !important;
+}
+
+/* Loading spinner enhancement */
+.spinner-border {
+  animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Plan statistics cards */
+.plan-stat-card {
+  background: rgba(30, 41, 59, 0.6) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(203, 213, 225, 0.1) !important;
+  border-radius: var(--border-radius) !important;
+  padding: 1.5rem !important;
+  text-align: center !important;
+  transition: all var(--transition) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.plan-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+
+.plan-stat-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.plan-stat-card h5 {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.plan-stat-card p {
+  color: var(--text-primary) !important;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  margin: 0 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Header styling with animation */
+.display-4 {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #10b981 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: gradient-shift 3s ease-in-out infinite alternate !important;
+}
+
+@keyframes gradient-shift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(30deg); }
+}
+
+.lead {
+  font-size: 1.25rem !important;
+  font-weight: 400 !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Enhanced text utilities */
+.text-primary { color: var(--text-accent) !important; }
+.text-info { color: #60a5fa !important; }
+.text-secondary { color: var(--text-secondary) !important; }
+.text-light { color: var(--text-primary) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+  .App {
+    padding: 1rem 0;
+  }
+  
+  .custom-card {
+    margin: 0 0.5rem;
+  }
+  
+  .custom-button, .custom-button-secondary {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .custom-table th, .custom-table td {
+    padding: 0.5rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .plan-stat-card {
+    padding: 1rem !important;
+  }
+  
+  .plan-stat-card p {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .display-4 {
+    font-size: 2rem !important;
+  }
+  
+  .lead {
+    font-size: 1.1rem !important;
+  }
+  
+  .custom-input {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus indicators for better accessibility */
+*:focus-visible {
+  outline: 2px solid var(--text-accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Utility classes */
+.fw-bold { font-weight: 700 !important; }
+.fw-semibold { font-weight: 600 !important; }
+.my-5 { margin: 3rem 0 !important; }
+.mb-5 { margin-bottom: 3rem !important; }
+.mb-4 { margin-bottom: 1.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mt-4 { margin-top: 1.5rem !important; }
+.g-4 { gap: 1.5rem !important; }
+.d-flex { display: flex !important; }
+.align-items-center { align-items: center !important; }
+.justify-content-center { justify-content: center !important; }
+.w-100 { width: 100% !important; }
+.w-75 { width: 75% !important; }
+.text-center { text-align: center !important; }
+
+/* Table responsive wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
