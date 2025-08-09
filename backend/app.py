@@ -36,7 +36,7 @@ DB_CONFIG = {
     'host': 'localhost',
     'database': 'theme_park_db',
     'user': 'root',
-    'password': '#####' # Using the updated password
+    'password': 'sqlppw' # Using the updated password
 }
 
 # --- Model Classes ---
