@@ -74,8 +74,7 @@ Real-time Queue Data: Integrate with a (mock or real) API to fetch live queue ti
 Ride Ratings & Reviews: Allow users to rate and review rides.
 
 
-
-
+## Output
 
 
 
