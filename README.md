@@ -75,8 +75,8 @@ Ride Ratings & Reviews: Allow users to rate and review rides.
 
 
 ## Output
-
-
+<img width="1248" height="964" alt="Screenshot 2025-09-19 210251" src="https://github.com/user-attachments/assets/6d5977dc-fa32-482e-a5d0-c529a8e97615" />
+<img width="1205" height="1087" alt="Screenshot 2025-09-19 210310" src="https://github.com/user-attachments/assets/0113a5c8-c233-4337-8e9c-c6bfb06b2dce" />
 
 
 
