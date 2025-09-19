@@ -4,8 +4,8 @@ import './App.css';
 
 function App() {
   // State variables for user preferences
-  const [totalHours, setTotalHours] = useState(''); // State for selected hours
-  const [totalMinutes, setTotalMinutes] = useState(''); // State for selected minutes
+  const [totalHours, setTotalHours] = useState(''); 
+  const [totalMinutes, setTotalMinutes] = useState(''); 
   const [userAge, setUserAge] = useState('');
   const [userWeight, setUserWeight] = useState('');
   const [isVIP, setIsVIP] = useState(true);
@@ -14,7 +14,7 @@ function App() {
 
   // State for managing rides and the generated plan
   const [rides, setRides] = useState([]);
-  const [plan, setPlan] = useState(null);
+  const [plan, setPlan] = useState(null); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -38,20 +38,16 @@ function App() {
       max_age: 100
   });
 
-  // --- STATES FOR AUTHENTICATION ---
+  // States for authentication 
   const [staffIdInput, setStaffIdInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [token, setToken] = useState(localStorage.getItem('jwt_token') || null);
   const [userRole, setUserRole] = useState(localStorage.getItem('user_role') || 'guest');
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const isAdminLoggedIn = userRole === 'admin';
-  // --- END NEW STATES ---
-
-  // State for Kids Rides section visibility
   const [showKidsRidesSection, setShowKidsRidesSection] = useState(false);
 
-
-  // Base URL for your Flask API
+  // Base URL for Flask API
   const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
   // Clear messages after timeout
@@ -61,7 +57,6 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [error]);
-
   useEffect(() => {
     if (success) {
       const timer = setTimeout(() => setSuccess(null), 3000);
@@ -114,15 +109,17 @@ function App() {
       const data = await response.json();
       setRides(data);
       console.log(`Loaded ${data.length} rides from backend`);
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("Error fetching rides:", err);
       setError(`Failed to load rides: ${err.message}`);
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };
 
-  // Handler for input changes in the "Add New Ride" form
+  // Handler for input changes in the form
   const handleNewRideInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setNewRide((prevRide) => ({
@@ -144,7 +141,6 @@ function App() {
       if (!['L', 'W', 'K'].includes(idPrefix) || isNaN(idNumber) || idNumber < 1) {
         return 'ID must start with L, W, or K followed by a number (e.g., L001, W002).';
       }
-
       const numThrill = parseInt(thrill);
       const numDuration = parseInt(duration);
       const numQueueTime = parseInt(queue_time);
@@ -153,7 +149,6 @@ function App() {
       const numMaxWeight = parseInt(max_weight);
       const numMinAge = parseInt(min_age);
       const numMaxAge = parseInt(max_age);
-      
       if (isNaN(numThrill) || numThrill < 1 || numThrill > 10) return 'Thrill must be between 1 and 10.';
       if (isNaN(numDuration) || numDuration < 1) return 'Duration must be at least 1 minute.';
       if (isNaN(numQueueTime) || numQueueTime < 0) return 'Queue time cannot be negative.';
@@ -164,11 +159,9 @@ function App() {
       if (isNaN(numMinAge) || numMinAge < 0) return 'Minimum age cannot be negative.';
       if (isNaN(numMaxAge) || numMaxAge < 1) return 'Maximum age must be at least 1 year.';
       if (numMinAge >= numMaxAge) return 'Minimum age must be less than maximum age.';
-      
       if (rides.some(ride => ride.id === id)) {
         return `Ride with ID ${id} already exists.`;
       }
-      
       return null;
     };
 
@@ -176,18 +169,15 @@ function App() {
   const handleAddRide = async () => {
     setError(null);
     setSuccess(null);
-    
     const validationError = validateNewRide();
     if (validationError) {
       setError(validationError);
       return;
     }
-
     if (!token) {
       setError('You must be logged in to add a ride.');
       return;
     }
-
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/add_ride`, {
@@ -214,15 +204,12 @@ function App() {
           max_age: parseInt(newRide.max_age)
         }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`);
       }
-
       const result = await response.json();
       setSuccess(result.message || 'Ride added successfully!');
-      
       setNewRide({
         id: '',
         name: '',
@@ -240,9 +227,9 @@ function App() {
         min_age: 0,
         max_age: 100
       });
-      
       await fetchRides();
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("Error adding ride:", err);
       setError(`Failed to add ride: ${err.message}`);
       if (err.message.includes('Token') || err.message.includes('Forbidden')) {
@@ -258,11 +245,9 @@ function App() {
     setError(null);
     setSuccess(null);
     setPlan(null);
-
     // Parse hours and minutes from dropdowns
     const selectedHours = parseInt(totalHours);
     const selectedMinutes = parseInt(totalMinutes);
-
     if (selectedHours > 7) {
       setError('The park is open for 7 hours');
       return;
@@ -271,32 +256,25 @@ function App() {
     const totalTimeInMinutes = (isNaN(selectedHours) ? 0 : selectedHours * 60) + 
                                (isNaN(selectedMinutes) ? 0 : selectedMinutes);
 
-    // Validate total time
+    // Validate total time and other fields
     if (totalTimeInMinutes <= 0) {
       setError('Total available time must be greater than 0 minutes. Please select hours and minutes.');
       return;
     }
-   
-    // Validate other required fields
     if (userAge === '' || userWeight === '') {
       setError('Please enter Your Age and Your Weight before generating a plan.');
       return;
     }
-
     const parsedUserAge = parseInt(userAge);
     const parsedUserWeight = parseInt(userWeight);
-
-    // Validate the parsed values
     if (isNaN(parsedUserAge) || parsedUserAge < 1 || parsedUserAge > 100) {
       setError('Age must be between 1 and 100 years.');
       return;
     }
-
     if (isNaN(parsedUserWeight) || parsedUserWeight < 10 || parsedUserWeight > 300) {
       setError('Weight must be between 10 and 300 kg.');
       return;
     }
-
     setLoading(true);
     
     try {
@@ -326,7 +304,7 @@ function App() {
       if (data.selected_rides && data.selected_rides.length > 0) {
         setSuccess(`Plan generated successfully! ${data.selected_rides.length} rides selected.`);
       } else {
-        setError('No rides could be scheduled with the current preferences. Try increasing your time or adjusting age/weight criteria.');
+        setError('No rides could be scheduled with the current preferences,try increasing your time or adjusting age/weight criteria.');
       }
     } catch (err) {
       console.error("Error generating plan:", err);
@@ -336,14 +314,12 @@ function App() {
     }
   };
 
-  // Helper function to determine thrill level text color
+  // Helper function to determine thrill level text color and other display features 
   const getThrillColorClass = (thrill) => {
     if (thrill >= 8) return 'text-danger';
     if (thrill >= 5) return 'text-warning';
     return 'text-success';
   };
-
-  // Helper function to get ride type background color for plan display
   const getRideTypeColorClass = (type) => {
     switch(type) {
       case 'water':
@@ -356,8 +332,6 @@ function App() {
         return '';
     }
   };
-
-  // Helper function to get ride type icon
   const getRideTypeIcon = (type) => {
     switch(type) {
       case 'water':
@@ -365,19 +339,18 @@ function App() {
       case 'land':
         return '🏔️';
       case 'kids':
-        return '�';
+        return '🎠';
       default:
         return '🎢';
     }
   };
 
-  // --- ADMIN LOGIN / LOGOUT LOGIC ---
+  // ADMIN LOGIN / LOGOUT
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(null);
-
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
@@ -389,12 +362,10 @@ function App() {
           password: passwordInput,
         }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
-
       const data = await response.json();
       setToken(data.token);
       setUserRole(data.role);
@@ -403,11 +374,13 @@ function App() {
       setSuccess(`Welcome, ${data.staff_id}! You are logged in as ${data.role}.`);
       setStaffIdInput('');
       setPasswordInput('');
-    } catch (err) {
+    } 
+    catch (err) {
       console.error("Login failed:", err);
       setError(`Login failed: ${err.message}`);
       handleLogout();
-    } finally {
+    } 
+    finally {
       setLoading(false);
     }
   };
@@ -420,14 +393,11 @@ function App() {
     setSuccess('Logged out successfully.');
     setError(null);
   };
-  // --- END ADMIN LOGIN / LOGOUT LOGIC ---
 
   // Filter rides by type for display
   const landRides = rides.filter(ride => ride.type === 'land');
   const waterRides = rides.filter(ride => ride.type === 'water');
   const kidsRides = rides.filter(ride => ride.type === 'kids');
-
-  // Determine if user is a kid (e.g., age < 13) for conditional rendering
   const isKidUser = parseInt(userAge) < 13 && parseInt(userAge) >= 1;
 
   // Scroll functions for navigation
@@ -438,32 +408,27 @@ function App() {
     }
   };
 
-
   return (
     <div className="App">
       <Container className="my-5">
        <header className="text-center mb-5 position-relative">
-          {/* Park Timings Banner */}
-          <div className="park-timing-banner mb-4 p-3 bg-secondary text-white rounded-lg shadow-sm">
-            <h4 className="mb-0 fw-bold">Park Timings: 11:00 AM - 6:00 PM</h4>
-            <p className="mb-0 text-sm">Plan your adventure within these hours!</p>
-          </div>
-
-          {/* Changed title to Thrill Safari and updated tagline */}
-          <h1 className="display-4 fw-bold text-primary">Thrill Safari</h1>
-          <p className="lead text-secondary">Your ultimate adventure awaits!</p>
-          
-          {/* Admin Toggle Button */}
-          <Button
-            variant="outline-secondary"
-            size="sm"
-            className="position-absolute top-0 end-0 mt-2"
-            onClick={() => setShowAdminPanel(!showAdminPanel)}
-          >
-            {showAdminPanel ? 'Hide Admin' : 'Show Admin'}
-          </Button>
-        </header>
-
+  {/* Park Timings Banner */}
+  <div className="park-timing-banner mb-4 p-3 bg-secondary text-white rounded-lg shadow-sm">
+    <h4 className="mb-0 fw-bold">Park Timings: 11:00 AM - 6:00 PM</h4>
+    <p className="mb-0 text-sm">Plan your adventure within these hours!</p>
+  </div>
+  <h1 className="display-4 fw-bold text-primary">Thrill Safari</h1>
+  <p className="lead text-secondary">Your ultimate adventure awaits!</p>
+  <Button
+    variant="outline-primary"
+    size="sm"
+    className="position-absolute"
+    style={{ top: '10px', right: '10px', zIndex: 1000 }}
+    onClick={() => setShowAdminPanel(!showAdminPanel)}
+  >
+    {showAdminPanel ? 'Hide Admin' : 'Show Admin'}
+  </Button>
+</header>
         {/* Navigation Buttons */}
         <Row className="mb-4">
           <Col md={12}>
@@ -508,7 +473,6 @@ function App() {
           </Col>
         </Row>
 
-        {/* Loading Spinner */}
         {loading && (
           <div className="text-center my-4">
             <Spinner animation="border" variant="info" /> 
@@ -539,7 +503,6 @@ function App() {
               <Card.Body>
                 <Card.Title className="text-center mb-4 text-info">Your Preferences</Card.Title>
                 <Form>
-                  {/* Consolidated Time Input */}
                   <Form.Group className="mb-3">
                     <Form.Label>Total Available Time *</Form.Label>
                     <Row className="g-2"> {/* Use g-2 for smaller gap */}
@@ -576,7 +539,6 @@ function App() {
                       Select your total available time.
                     </Form.Text>
                   </Form.Group>
-
                 <Form.Group className="mb-3">
                   <Form.Label>Your Age (years) *</Form.Label>
                   <Form.Control
@@ -648,11 +610,8 @@ function App() {
                     {loading ? 'Generating...' : 'Generate Optimal Plan'}
                   </Button>
                 </Form>
-              </Card.Body>
-            </Card>
-          </Col>
+              </Card.Body> </Card> </Col>
 
-          {/* Admin Login Section - Conditionally Rendered */}
           {showAdminPanel && (
             <Col md={6}>
               <Card className="shadow-lg custom-card">
@@ -705,14 +664,12 @@ function App() {
                       </Button>
                     </div>
                   )}
-                </Card.Body>
-              </Card>
-            </Col>
+                </Card.Body> </Card> </Col>
           )}
         </Row>
 
         {/* Add New Ride Section - Conditionally rendered based on admin role */}
-        {isAdminLoggedIn && ( // Only render if userRole is 'admin'
+        {isAdminLoggedIn && (
           <Row className="mt-4">
             <Col md={12}>
               <Card className="shadow-lg custom-card">
@@ -943,15 +900,10 @@ function App() {
                       {loading ? 'Adding Ride...' : 'Add Ride'}
                     </Button>
                   </Form>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+                </Card.Body> </Card> </Col> </Row>
         )}
        
         <br></br><br></br>
-
-        {/* Optimal Plan Section */}
         {/* Optimal Plan Section */}
         {plan && (
           <Row className="mt-4" id="optimal-plan-section">
@@ -1051,7 +1003,6 @@ function App() {
                           <strong>Weather:</strong> {plan.bad_weather_used ? 'Bad' : 'Good'}
                         </Col>
                       </Row>
-                      {/* NEW: Display ride preference used */}
                       {plan.ride_preference_used && (
                         <Row className="text-sm mt-2">
                           <Col md={12} className="text-center">
@@ -1074,15 +1025,12 @@ function App() {
                       <p><small>Try increasing your time limit, or adjusting age/weight criteria.</small></p>
                     </div>
                   )}
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+                </Card.Body> </Card> </Col>  </Row>
         )}
 
         {/* Categorized Rides Sections */}
         <Row className="mt-4 g-4">
-          {/* Land Rides Section */}
+          {/* Land  */}
           <Col md={12} id="land-rides-section">
             <Card className="shadow-lg custom-card">
               <Card.Body>
@@ -1127,11 +1075,9 @@ function App() {
                     </Table>
                   </div>
                 )}
-              </Card.Body>
-            </Card>
-          </Col>
+              </Card.Body> </Card> </Col>
 
-        {/* Water Rides Section */}
+        {/* Water */}
           <Col md={12} id="water-rides-section">
             <Card className="shadow-lg custom-card">
               <Card.Body>
@@ -1178,11 +1124,9 @@ function App() {
                     </Table>
                   </div>
                 )}
-              </Card.Body>
-            </Card>
-          </Col>
+              </Card.Body> </Card> </Col>
 
-          {/* Kids Rides Section */}
+          {/* Kids Rides */}
           {isKidUser && ( // Only show Kids Rides section if user is detected as a kid
             <Col md={12} id="kids-rides-section">
               <Card className="shadow-lg custom-card">
@@ -1198,7 +1142,7 @@ function App() {
                       {showKidsRidesSection ? '-' : '+'}
                     </Button>
                   </Card.Title>
-                  {showKidsRidesSection && ( // Conditionally render content based on toggle
+                  {showKidsRidesSection && ( 
                     kidsRides.length === 0 ? (
                       <div className="text-center text-muted py-4">
                         <p>No kids rides available.</p>
@@ -1238,15 +1182,11 @@ function App() {
                       </div>
                     )
                   )}
-                </Card.Body>
-              </Card>
-            </Col>
+                </Card.Body> </Card> </Col>
           )}
         </Row>
-
       </Container>
     </div>
   );
 }
-
 export default App;
