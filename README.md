@@ -85,5 +85,3 @@ Ride Ratings & Reviews: Allow users to rate and review rides.
 
 
 
-Tools
-
